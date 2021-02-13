@@ -39,15 +39,15 @@ const getImages = (query) => {
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
-  element.classList.add('added');
-  // toggleSelect(element);
+  // element.classList.add('added');
+  toggleSelect(element);
   let item = sliders.indexOf(img);
   if (item === -1) {
     sliders.push(img);
   } else {
     sliders.pop(img);
-    element.classList.remove('added');
-    // toggleSelect(element);
+    // element.classList.remove('added');
+    toggleSelect(element);
   }
  
 }
@@ -142,6 +142,6 @@ document.getElementById("search").addEventListener("keypress",function(event){
     sliders.length = 0;
   }
 })
-// const toggleSelect = (element) => {
-//   element.classList.toggle(add('added'));
-// }
+const toggleSelect = (element) => {
+  element.classList.toggle('added');
+}
