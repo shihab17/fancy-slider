@@ -21,6 +21,7 @@ const showImages = (images) => {
   galleryHeader.style.display = 'flex';
   images.forEach(image => {
     let div = document.createElement('div');
+    div.id='imgItem'
     div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
     div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
     gallery.appendChild(div)
@@ -39,13 +40,16 @@ let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
   element.classList.add('added');
- 
+  // toggleSelect(element);
   let item = sliders.indexOf(img);
   if (item === -1) {
     sliders.push(img);
   } else {
-    alert('Hey, Already added !')
+    sliders.pop(img);
+    element.classList.remove('added');
+    // toggleSelect(element);
   }
+ 
 }
 var timer
 const createSlider = () => {
@@ -130,7 +134,7 @@ sliderBtn.addEventListener('click', function () {
 
 // 4th problem:searching by Key pressed 
 document.getElementById("search").addEventListener("keypress",function(event){
-  if(event.key==='Enter'){
+  if(event.key === 'Enter'){
     document.querySelector('.main').style.display = 'none';
     clearInterval(timer);
     const search = document.getElementById('search');
@@ -138,3 +142,6 @@ document.getElementById("search").addEventListener("keypress",function(event){
     sliders.length = 0;
   }
 })
+// const toggleSelect = (element) => {
+//   element.classList.toggle(add('added'));
+// }
