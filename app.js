@@ -68,7 +68,7 @@ const createSlider = () => {
   // hide image aria
   imagesArea.style.display = 'none';
   const duration = document.getElementById('duration').value || 1000;
-  // checking neagive time duration 
+  // 3rd problem: checking neagive time duration 
   if(duration<0){
     alert("duration can not be negative")
   }
@@ -126,4 +126,15 @@ searchBtn.addEventListener('click', function () {
 
 sliderBtn.addEventListener('click', function () {
   createSlider()
+})
+
+// 4th problem:searching by Key pressed 
+document.getElementById("search").addEventListener("keypress",function(event){
+  if(event.key==='Enter'){
+    document.querySelector('.main').style.display = 'none';
+    clearInterval(timer);
+    const search = document.getElementById('search');
+    getImages(search.value)
+    sliders.length = 0;
+  }
 })
