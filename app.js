@@ -19,20 +19,27 @@ const showImages = (images) => {
   gallery.innerHTML = '';
   // show gallery title
   galleryHeader.style.display = 'flex';
+  // console.log(images)
   images.forEach(image => {
+    console.log(image)
     let div = document.createElement('div');
-    div.id='imgItem'
+    div.id = 'imgItem'
     div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-    div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
+    div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">
+                      <p><i class="fa fa-eye ml-3"> ${image.views}</i><i class="fa fa-download ml-3"> ${image.downloads}</i><i class="fa fa-bookmark ml-3"> ${image.favorites}</i></p>`;
     gallery.appendChild(div)
   })
 
 }
 
 const getImages = (query) => {
+
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
-    .then(data => showImages(data.hits))//First problem: hitS-> hits
+    .then(data => {
+      toggleSpinner();
+      showImages(data.hits);
+    })//First problem: hitS-> hits
     .catch(err => console.log(err))
 }
 
@@ -40,16 +47,18 @@ let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
   // element.classList.add('added');
-  toggleSelect(element);
+
   let item = sliders.indexOf(img);
+
   if (item === -1) {
     sliders.push(img);
+    toggleSelect(element);
   } else {
     sliders.pop(img);
     // element.classList.remove('added');
     toggleSelect(element);
   }
- 
+
 }
 var timer
 const createSlider = () => {
@@ -73,10 +82,13 @@ const createSlider = () => {
   imagesArea.style.display = 'none';
   const duration = document.getElementById('duration').value || 1000;
   // 3rd problem: checking neagive time duration 
-  if(duration<0){
+  if (duration < 0) {
     alert("duration can not be negative")
+    document.querySelector('.main').style.display = 'none';
+    imagesArea.style.display = 'block';
+    return;
   }
-  else{
+  else {
     sliders.forEach(slide => {
       let item = document.createElement('div')
       item.className = "slider-item";
@@ -91,7 +103,8 @@ const createSlider = () => {
       changeSlide(slideIndex);
     }, duration);
   }
-  
+
+
 }
 
 // change slider index 
@@ -121,6 +134,7 @@ const changeSlide = (index) => {
 }
 
 searchBtn.addEventListener('click', function () {
+  toggleSpinner();
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
   const search = document.getElementById('search');
@@ -133,8 +147,9 @@ sliderBtn.addEventListener('click', function () {
 })
 
 // 4th problem:searching by Key pressed 
-document.getElementById("search").addEventListener("keypress",function(event){
-  if(event.key === 'Enter'){
+document.getElementById("search").addEventListener("keypress", function (event) {
+  if (event.key === 'Enter') {
+    toggleSpinner();
     document.querySelector('.main').style.display = 'none';
     clearInterval(timer);
     const search = document.getElementById('search');
@@ -144,4 +159,8 @@ document.getElementById("search").addEventListener("keypress",function(event){
 })
 const toggleSelect = (element) => {
   element.classList.toggle('added');
+}
+// bonus part: spnnier 
+const toggleSpinner = () => {
+  document.getElementById("loading").classList.toggle('d-none');
 }
