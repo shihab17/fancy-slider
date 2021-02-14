@@ -19,9 +19,7 @@ const showImages = (images) => {
   gallery.innerHTML = '';
   // show gallery title
   galleryHeader.style.display = 'flex';
-  // console.log(images)
   images.forEach(image => {
-    console.log(image)
     let div = document.createElement('div');
     div.id = 'imgItem'
     div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
