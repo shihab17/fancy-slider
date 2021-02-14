@@ -84,6 +84,7 @@ const createSlider = () => {
     alert("duration can not be negative")
     document.querySelector('.main').style.display = 'none';
     imagesArea.style.display = 'block';
+    document.getElementById('duration').value = -duration;
     return;
   }
   else {
